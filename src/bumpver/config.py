@@ -148,6 +148,7 @@ class Config(typ.NamedTuple):
 
     pre_commit_hook : str
     post_commit_hook: str
+    uv_lock         : bool
 
     commit        : bool
     tag           : bool
@@ -171,6 +172,7 @@ def _debug_str(cfg: Config) -> str:
         f"\n    tag_scope='{cfg.tag_scope.value}',",
         f"\n    pre_commit_hook={cfg.pre_commit_hook},",
         f"\n    post_commit_hook={cfg.post_commit_hook},",
+        f"\n    uv_lock={cfg.uv_lock},",
         f"\n    commit={cfg.commit},",
         f"\n    tag={cfg.tag},",
         f"\n    push={cfg.push},",
@@ -418,6 +420,7 @@ def _parse_config(raw_cfg: RawConfig) -> Config:
 
     pre_commit_hook : str = _parse_cfg_strings(raw_cfg, 'pre_commit_hook' , "")
     post_commit_hook: str = _parse_cfg_strings(raw_cfg, 'post_commit_hook', "")
+    uv_lock         : bool = raw_cfg.get('uv_lock', False)
 
     commit = raw_cfg['commit']
     tag    = raw_cfg['tag']
@@ -454,6 +457,7 @@ def _parse_config(raw_cfg: RawConfig) -> Config:
         tag_scope=tag_scope,
         pre_commit_hook=pre_commit_hook,
         post_commit_hook=post_commit_hook,
+        uv_lock=uv_lock,
         commit=commit,
         tag=tag,
         push=push,
@@ -560,6 +564,7 @@ tag_message = "{{new_version}}"
 tag_scope = "{default_tag_scope}"
 pre_commit_hook = ""
 post_commit_hook = ""
+uv_lock = False
 commit = True
 tag = True
 push = True
@@ -604,6 +609,7 @@ tag_message = "{{new_version}}"
 tag_scope = "{default_tag_scope}"
 pre_commit_hook = ""
 post_commit_hook = ""
+uv_lock = false
 commit = true
 tag = true
 push = true
@@ -621,6 +627,7 @@ tag_message = "{{new_version}}"
 tag_scope = "{default_tag_scope}"
 pre_commit_hook = ""
 post_commit_hook = ""
+uv_lock = false
 commit = true
 tag = true
 push = true

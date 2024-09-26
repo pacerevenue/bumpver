@@ -278,6 +278,11 @@ def commit(
             logger.info(f"Run pre-commit hook: {cfg.pre_commit_hook}")
             hooks.run(cfg.pre_commit_hook, cfg.current_version, new_version)
 
+        if cfg.uv_lock:
+            logger.info("Update uv.lock")
+            sp.run(["uv", "lock", "--no-upgrade"], check=True)
+            filepaths.add("uv.lock")
+
         for filepath in filepaths:
             vcs_api.add(filepath)
 
