@@ -222,7 +222,7 @@ class _ConfigParser(configparser.RawConfigParser):
 
 OptionVal = typ.Union[str, bool, None]
 
-BOOL_OPTIONS: typ.Mapping[str, OptionVal] = {'commit': False, 'tag': None, 'push': None}
+BOOL_OPTIONS: typ.Mapping[str, OptionVal] = {'commit': False, 'tag': None, 'push': None, 'uv_lock': False}
 
 
 def _parse_cfg(cfg_buffer: typ.IO[str]) -> RawConfig:
