@@ -306,19 +306,6 @@ lint_isort:
 	@printf "\e[1F\e[9C ok\n"
 
 
-## Run sjfmt with --check
-.PHONY: lint_fmt
-lint_fmt:
-	@printf "sjfmt ...\n"
-	@$(DEV_ENV)/bin/sjfmt \
-		--target-version=py36 \
-		--skip-string-normalization \
-		--line-length=$(MAX_LINE_LEN) \
-		--check \
-		src/ test/ 2>&1 | sed "/All done/d" | sed "/left unchanged/d"
-	@printf "\e[1F\e[9C ok\n"
-
-
 ## Run flake8
 .PHONY: lint_flake8
 lint_flake8:
@@ -362,7 +349,7 @@ pylint_ignore:
 
 ## Run flake8 linter and check for fmt
 .PHONY: lint
-lint: lint_isort lint_fmt lint_flake8 lint_pylint
+lint: lint_isort lint_flake8 lint_pylint
 
 
 ## Run mypy type checker

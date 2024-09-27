@@ -57,18 +57,13 @@ classifiers = [
 package_dir = {"": "src"}
 
 
-if any(arg.startswith("bdist") for arg in sys.argv):
-    import lib3to6
-    package_dir = lib3to6.fix(package_dir)
-
-
 setuptools.setup(
     name="bumpver",
     license="MIT",
     author="Manuel Barkhau",
     author_email="mbarkhau@gmail.com",
     url="https://github.com/mbarkhau/bumpver",
-    version="2023.1129",
+    version="2024.1131a0",
     keywords="version bumpver calver semver versioning bumpversion pep440",
     description="Bump version numbers in project files.",
     long_description=long_description,

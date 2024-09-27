@@ -220,3 +220,5 @@ fabric.properties
 
 # Visual Studio Code
 .vscode
+
+.venv/

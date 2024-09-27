@@ -134,38 +134,43 @@ def test_parse_toml_1():
     buf = mk_buf(PYCALVER_TOML_FIXTURE_1)
 
     raw_cfg = config._parse_toml(buf)
-    cfg     = config._parse_config(raw_cfg)
+    cfg = config._parse_config(raw_cfg)
 
     assert cfg.current_version == "v2020.1003-alpha"
     assert cfg.version_pattern == "vYYYY.BUILD[-TAG]"
     assert cfg.commit is True
-    assert cfg.tag    is True
-    assert cfg.push   is True
+    assert cfg.tag is True
+    assert cfg.push is True
 
     files = set(cfg.file_patterns)
     assert "pycalver.toml" in files
 
     raw_patterns_by_path = _parse_raw_patterns_by_filepath(cfg)
-    assert raw_patterns_by_path["README.md"    ] == ["vYYYY.BUILD[-TAG]", "YYYY.BLD[PYTAGNUM]"]
-    assert raw_patterns_by_path["pycalver.toml"] == ['current_version = "vYYYY.BUILD[-TAG]"']
+    assert raw_patterns_by_path["README.md"] == [
+        "vYYYY.BUILD[-TAG]",
+        "YYYY.BLD[PYTAGNUM]",
+    ]
+    assert raw_patterns_by_path["pycalver.toml"] == [
+        'current_version = "vYYYY.BUILD[-TAG]"'
+    ]
 
 
 def test_parse_toml_2():
     buf = mk_buf(PYCALVER_TOML_FIXTURE_2)
 
     raw_cfg = config._parse_toml(buf)
-    cfg     = config._parse_config(raw_cfg)
+    cfg = config._parse_config(raw_cfg)
 
     assert cfg.current_version == "1.2.3"
     assert cfg.version_pattern == "{semver}"
     assert cfg.commit is False
-    assert cfg.tag    is False
-    assert cfg.push   is False
+    assert cfg.tag is False
+    assert cfg.push is False
 
     assert "pycalver.toml" in cfg.file_patterns
 
     raw_patterns_by_path = _parse_raw_patterns_by_filepath(cfg)
-    assert raw_patterns_by_path["README.md"    ] == ["{semver}", "{semver}"]
+    assert raw_patterns_by_path["README.md"] == ["{semver}", "{semver}"]
     assert raw_patterns_by_path["pycalver.toml"] == ['current_version = "{semver}"']
 
 
@@ -173,60 +178,75 @@ def test_parse_toml_3():
     buf = mk_buf(CALVER_TOML_FIXTURE_3)
 
     raw_cfg = config._parse_toml(buf)
-    cfg     = config._parse_config(raw_cfg)
+    cfg = config._parse_config(raw_cfg)
 
     assert cfg.current_version == "v201808.0123-alpha"
     assert cfg.version_pattern == "vYYYY0M.BUILD[-TAG]"
     assert cfg.commit is True
-    assert cfg.tag    is True
-    assert cfg.push   is True
+    assert cfg.tag is True
+    assert cfg.push is True
 
     files = set(cfg.file_patterns)
     assert "bumpver.toml" in files
 
     raw_patterns_by_path = _parse_raw_patterns_by_filepath(cfg)
-    assert raw_patterns_by_path["README.md"   ] == ["vYYYY0M.BUILD[-TAG]", "YYYY0M.BLD[PYTAGNUM]"]
-    assert raw_patterns_by_path["bumpver.toml"] == ['current_version = "vYYYY0M.BUILD[-TAG]"']
+    assert raw_patterns_by_path["README.md"] == [
+        "vYYYY0M.BUILD[-TAG]",
+        "YYYY0M.BLD[PYTAGNUM]",
+    ]
+    assert raw_patterns_by_path["bumpver.toml"] == [
+        'current_version = "vYYYY0M.BUILD[-TAG]"'
+    ]
 
 
 def test_parse_v1_cfg():
     buf = mk_buf(SETUP_CFG_FIXTURE)
 
     raw_cfg = config._parse_cfg(buf)
-    cfg     = config._parse_config(raw_cfg)
+    cfg = config._parse_config(raw_cfg)
 
     assert cfg.current_version == "v201808.0456-beta"
     assert cfg.commit is True
-    assert cfg.tag    is True
-    assert cfg.push   is True
+    assert cfg.tag is True
+    assert cfg.push is True
 
     files = set(cfg.file_patterns)
     assert "setup.cfg" in files
 
     raw_patterns_by_path = _parse_raw_patterns_by_filepath(cfg)
-    assert raw_patterns_by_path["setup.py" ] == ["vYYYY0M.BUILD[-TAG]", "YYYY0M.BLD[PYTAGNUM]"]
-    assert raw_patterns_by_path["setup.cfg"] == ['current_version = "vYYYY0M.BUILD[-TAG]"']
+    assert raw_patterns_by_path["setup.py"] == [
+        "vYYYY0M.BUILD[-TAG]",
+        "YYYY0M.BLD[PYTAGNUM]",
+    ]
+    assert raw_patterns_by_path["setup.cfg"] == [
+        'current_version = "vYYYY0M.BUILD[-TAG]"'
+    ]
 
 
 def test_parse_v2_cfg():
     buf = mk_buf(NEW_PATTERN_CFG_FIXTURE)
 
     raw_cfg = config._parse_cfg(buf)
-    cfg     = config._parse_config(raw_cfg)
+    cfg = config._parse_config(raw_cfg)
     assert cfg.current_version == "v201808.1456-beta"
-    assert cfg.commit_message  == "bump version to {new_version}"
-    assert cfg.tag_message     == "release {new_version}"
+    assert cfg.commit_message == "bump version to {new_version}"
+    assert cfg.tag_message == "release {new_version}"
     assert cfg.commit is True
-    assert cfg.tag    is True
-    assert cfg.push   is True
+    assert cfg.tag is True
+    assert cfg.push is True
 
     files = set(cfg.file_patterns)
     assert "setup.py" in files
     assert "setup.cfg" in files
 
     raw_patterns_by_path = _parse_raw_patterns_by_filepath(cfg)
-    assert raw_patterns_by_path["setup.py"] == ["vYYYY0M.BUILD[-TAG]", "YYYY0M.BLD[PYTAGNUM]"]
-    assert raw_patterns_by_path["setup.cfg"] == ['current_version = "vYYYY0M.BUILD[-TAG]"']
+    assert raw_patterns_by_path["setup.py"] == [
+        "vYYYY0M.BUILD[-TAG]",
+        "YYYY0M.BLD[PYTAGNUM]",
+    ]
+    assert raw_patterns_by_path["setup.cfg"] == [
+        'current_version = "vYYYY0M.BUILD[-TAG]"'
+    ]
     assert raw_patterns_by_path["src/project/*.py"] == ["Copyright (c) 2018-YYYY"]
 
 
@@ -235,12 +255,12 @@ def test_parse_tag_scope_cfg(tag_scope):
     buf = mk_buf(f"{MINIMAL_CFG_FIXTURE}\ntag_scope={tag_scope}")
 
     raw_cfg = config._parse_cfg(buf)
-    cfg     = config._parse_config(raw_cfg)
+    cfg = config._parse_config(raw_cfg)
 
     assert cfg.tag_scope == tag_scope
 
 
-@pytest.mark.parametrize("tag_scope", ['foobar'])
+@pytest.mark.parametrize("tag_scope", ["foobar"])
 def test_parse_tag_scope_cfg_invalid_value(tag_scope):
     buf = mk_buf(f"{MINIMAL_CFG_FIXTURE}\ntag_scope={tag_scope}")
 
@@ -253,12 +273,12 @@ def test_parse_tag_scope_cfg_invalid_value(tag_scope):
 def test_parse_default_toml():
     project_path = util.FIXTURES_DIR / "project_a"
 
-    ctx          = config.init_project_ctx(project_path)
+    ctx = config.init_project_ctx(project_path)
     default_toml = config.default_config(ctx)
 
-    buf     = mk_buf(default_toml)
+    buf = mk_buf(default_toml)
     raw_cfg = config._parse_toml(buf)
-    cfg     = config._parse_config(raw_cfg)
+    cfg = config._parse_config(raw_cfg)
 
     assert cfg
 
@@ -266,19 +286,19 @@ def test_parse_default_toml():
 def test_parse_default_cfg():
     project_path = util.FIXTURES_DIR / "project_b"
 
-    ctx         = config.init_project_ctx(project_path)
+    ctx = config.init_project_ctx(project_path)
     default_cfg = config.default_config(ctx)
 
-    buf     = mk_buf(default_cfg)
+    buf = mk_buf(default_cfg)
     raw_cfg = config._parse_cfg(buf)
-    cfg     = config._parse_config(raw_cfg)
+    cfg = config._parse_config(raw_cfg)
 
     assert cfg
 
 
 def test_parse_project_toml():
-    project_path    = util.FIXTURES_DIR / "project_a"
-    config_path     = util.FIXTURES_DIR / "project_a" / "bumpver.toml"
+    project_path = util.FIXTURES_DIR / "project_a"
+    config_path = util.FIXTURES_DIR / "project_a" / "bumpver.toml"
     config_rel_path = "bumpver.toml"
 
     with config_path.open() as fobj:
@@ -287,7 +307,9 @@ def test_parse_project_toml():
     assert "v2017.0123-alpha" in config_data
 
     ctx = config.init_project_ctx(project_path)
-    assert ctx == config.ProjectContext(project_path, config_path, config_rel_path, "toml", None)
+    assert ctx == config.ProjectContext(
+        project_path, config_path, config_rel_path, "toml", None
+    )
 
     cfg = config.parse(ctx)
 
@@ -295,16 +317,16 @@ def test_parse_project_toml():
 
     assert cfg.current_version == "v2017.0123-alpha"
     assert cfg.commit is True
-    assert cfg.tag    is True
-    assert cfg.push   is True
+    assert cfg.tag is True
+    assert cfg.push is True
 
     files = set(cfg.file_patterns.keys())
     assert files == {"bumpver.toml", "README.md"}
 
 
 def test_parse_project_cfg():
-    project_path    = util.FIXTURES_DIR / "project_b"
-    config_path     = util.FIXTURES_DIR / "project_b" / "setup.cfg"
+    project_path = util.FIXTURES_DIR / "project_b"
+    config_path = util.FIXTURES_DIR / "project_b" / "setup.cfg"
     config_rel_path = "setup.cfg"
 
     with config_path.open() as fobj:
@@ -313,15 +335,17 @@ def test_parse_project_cfg():
     assert "v201307.0456-beta" in config_data
 
     ctx = config.init_project_ctx(project_path)
-    assert ctx == config.ProjectContext(project_path, config_path, config_rel_path, 'cfg', None)
+    assert ctx == config.ProjectContext(
+        project_path, config_path, config_rel_path, "cfg", None
+    )
 
     cfg = config.parse(ctx)
 
     assert cfg
     assert cfg.current_version == "v201307.0456-beta"
     assert cfg.commit is True
-    assert cfg.tag    is True
-    assert cfg.push   is True
+    assert cfg.tag is True
+    assert cfg.push is True
 
     assert set(cfg.file_patterns.keys()) == {
         "setup.py",
@@ -333,37 +357,41 @@ def test_parse_project_cfg():
 
 def test_parse_toml_file(tmpdir):
     project_path = tmpdir.mkdir("minimal")
-    cfg_file     = project_path.join("pycalver.toml")
+    cfg_file = project_path.join("pycalver.toml")
     cfg_file.write(PYCALVER_TOML_FIXTURE_1)
     cfg_file_rel_path = "pycalver.toml"
 
     ctx = config.init_project_ctx(project_path)
-    assert ctx == config.ProjectContext(project_path, cfg_file, cfg_file_rel_path, 'toml', None)
+    assert ctx == config.ProjectContext(
+        project_path, cfg_file, cfg_file_rel_path, "toml", None
+    )
 
     cfg = config.parse(ctx)
 
     assert cfg
     assert cfg.current_version == "v2020.1003-alpha"
     assert cfg.version_pattern == "vYYYY.BUILD[-TAG]"
-    assert cfg.tag    is True
+    assert cfg.tag is True
     assert cfg.commit is True
-    assert cfg.push   is True
+    assert cfg.push is True
 
     raw_patterns_by_filepath = _parse_raw_patterns_by_filepath(cfg)
     assert raw_patterns_by_filepath == {
-        "README.md"    : ["vYYYY.BUILD[-TAG]", "YYYY.BLD[PYTAGNUM]"],
+        "README.md": ["vYYYY.BUILD[-TAG]", "YYYY.BLD[PYTAGNUM]"],
         "pycalver.toml": ['current_version = "vYYYY.BUILD[-TAG]"'],
     }
 
 
 def test_parse_default_pattern():
-    project_path    = util.FIXTURES_DIR / "project_c"
-    config_path     = util.FIXTURES_DIR / "project_c" / "pyproject.toml"
+    project_path = util.FIXTURES_DIR / "project_c"
+    config_path = util.FIXTURES_DIR / "project_c" / "pyproject.toml"
     config_rel_path = "pyproject.toml"
 
     ctx = config.init_project_ctx(project_path)
 
-    assert ctx == config.ProjectContext(project_path, config_path, config_rel_path, "toml", None)
+    assert ctx == config.ProjectContext(
+        project_path, config_path, config_rel_path, "toml", None
+    )
 
     cfg = config.parse(ctx)
 
@@ -373,8 +401,8 @@ def test_parse_default_pattern():
     # assert cfg.version_pattern == "vYYYYqQ.BUILD"
     assert cfg.version_pattern == "v{year}q{quarter}.{build_no}"
     assert cfg.commit is True
-    assert cfg.tag    is True
-    assert cfg.push   is True
+    assert cfg.tag is True
+    assert cfg.push is True
 
     raw_patterns_by_filepath = _parse_raw_patterns_by_filepath(cfg)
     assert raw_patterns_by_filepath == {
@@ -384,25 +412,27 @@ def test_parse_default_pattern():
 
 def test_parse_cfg_file(tmpdir):
     project_path = tmpdir.mkdir("minimal")
-    setup_cfg    = project_path.join("setup.cfg")
+    setup_cfg = project_path.join("setup.cfg")
     setup_cfg.write(SETUP_CFG_FIXTURE)
     setup_cfg_rel_path = "setup.cfg"
 
     ctx = config.init_project_ctx(project_path)
-    assert ctx == config.ProjectContext(project_path, setup_cfg, setup_cfg_rel_path, 'cfg', None)
+    assert ctx == config.ProjectContext(
+        project_path, setup_cfg, setup_cfg_rel_path, "cfg", None
+    )
 
     cfg = config.parse(ctx)
 
     assert cfg
     assert cfg.current_version == "v201808.0456-beta"
     assert cfg.version_pattern == "vYYYY0M.BUILD[-TAG]"
-    assert cfg.tag    is True
+    assert cfg.tag is True
     assert cfg.commit is True
-    assert cfg.push   is True
+    assert cfg.push is True
 
     raw_patterns_by_filepath = _parse_raw_patterns_by_filepath(cfg)
     assert raw_patterns_by_filepath == {
-        "setup.py" : ["vYYYY0M.BUILD[-TAG]", "YYYY0M.BLD[PYTAGNUM]"],
+        "setup.py": ["vYYYY0M.BUILD[-TAG]", "YYYY0M.BLD[PYTAGNUM]"],
         "setup.cfg": ['current_version = "vYYYY0M.BUILD[-TAG]"'],
     }
 
@@ -415,7 +445,7 @@ def test_parse_config_missing(tmpdir):
     assert cfg is None
 
     setup_path = tmpdir.mkdir("fail").join("setup.cfg")
-    ctx        = config.init_project_ctx(setup_path)
+    ctx = config.init_project_ctx(setup_path)
     assert ctx
 
     cfg = config.parse(ctx)
@@ -453,7 +483,9 @@ def test_parse_missing_version(tmpdir):
 
 def test_parse_invalid_version(tmpdir):
     setup_path = tmpdir.mkdir("fail").join("setup.cfg")
-    setup_path.write("\n".join(("[bumpver]", "current_version = 0.1.0", "commit = False")))
+    setup_path.write(
+        "\n".join(("[bumpver]", "current_version = 0.1.0", "commit = False"))
+    )
 
     ctx = config.init_project_ctx(setup_path)
     assert ctx
@@ -476,14 +508,27 @@ def test_parse_commit_hooks():
     )
 
     raw_cfg = config._parse_cfg(buf)
-    cfg     = config._parse_config(raw_cfg)
+    cfg = config._parse_config(raw_cfg)
     assert cfg
 
-    assert cfg.pre_commit_hook  == f"{str(hooks_path)}/pre_commit_hook.py"
+    assert cfg.pre_commit_hook == f"{str(hooks_path)}/pre_commit_hook.py"
     assert cfg.post_commit_hook == f"{str(hooks_path)}/post_commit_hook.py"
 
 
-@pytest.mark.parametrize("hook", ['pre_commit_hook', 'post_commit_hook'])
+@pytest.mark.parametrize(["uv_lock_config_value", "expected_value"], [("True", True), ("false", False), (None, False)])
+def test_parse_uv_lock(uv_lock_config_value, expected_value):
+    config_values = [MINIMAL_CFG_FIXTURE]
+    if uv_lock_config_value is not None:
+        config_values.append(f"uv_lock={uv_lock_config_value}")
+    buf = mk_buf("\n".join(config_values))
+
+    raw_cfg = config._parse_cfg(buf)
+    cfg = config._parse_config(raw_cfg)
+
+    assert cfg.uv_lock is expected_value
+
+
+@pytest.mark.parametrize("hook", ["pre_commit_hook", "post_commit_hook"])
 def test_parse_commit_hooks_invalid(hook):
     buf = mk_buf(f"{MINIMAL_CFG_FIXTURE}\n{hook}='foobar.py'")
 
@@ -503,10 +548,10 @@ CAPITALIZATION_CASES = [
 @pytest.mark.parametrize("filename", CAPITALIZATION_CASES)
 def test_capitalisation(filename):
     try:
-        with io.open(filename, mode='w', encoding="utf-8") as fobj:
+        with io.open(filename, mode="w", encoding="utf-8") as fobj:
             fobj.write("This is a test file for testing capitalization")
 
-        raw_patterns      = {filename: filename}
+        raw_patterns = {filename: filename}
         expanded_patterns = list(config._iter_glob_expanded_file_patterns(raw_patterns))
         assert len(expanded_patterns) == 1
 
