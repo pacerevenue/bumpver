@@ -2,7 +2,7 @@
 # This file is part of the bumpver project
 # https://github.com/mbarkhau/bumpver
 #
-# Copyright (c) 2018-2024 Manuel Barkhau (mbarkhau@gmail.com) - MIT License
+# Copyright (c) 2018-2025 Manuel Barkhau (mbarkhau@gmail.com) - MIT License
 # SPDX-License-Identifier: MIT
 """cli module for BumpVer."""
 import io
@@ -264,7 +264,7 @@ def version_options(function: typ.Callable) -> typ.Callable:
 
 
 @click.group(context_settings={'help_option_names': ["-h", "--help"]})
-@click.version_option(version="2024.1132")
+@click.version_option(version="2025.1133")
 @verbose_option
 def cli(verbose: int = 0) -> None:
     """Automatically update version strings in plaintext files."""
