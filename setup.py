@@ -58,7 +58,7 @@ package_dir = {"": "src"}
 
 
 setuptools.setup(
-    name="bumpver",
+    name="bumpver-uv",
     license="MIT",
     author="Manuel Barkhau",
     author_email="mbarkhau@gmail.com",
