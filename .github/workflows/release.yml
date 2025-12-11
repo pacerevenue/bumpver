@@ -1,0 +1,12 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'        # Actual releases
+      - 'v[0-9]+.[0-9]+.[0-9]+a[0-9]+' # Alpha releases
+
+jobs:
+  release:
+    uses: pacerevenue/science-ci/.github/workflows/release-python-package.yml@v2
+    secrets: inherit
