@@ -1,8 +1,0 @@
-- job:
-    name: bumpver-uv-release
-    parent: uv-release
-
-- project:
-    release:
-      jobs:
-        - bumpver-uv-release
