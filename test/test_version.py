@@ -311,3 +311,24 @@ PEP440_TEST_CASES = [
 @pytest.mark.parametrize("version_str, expected", PEP440_TEST_CASES)
 def test_to_pep440(version_str, expected):
     assert version.to_pep440(version_str) == expected
+
+
+PRERELEASE_LT_FINAL_CASES = [
+    ("1.2.3a0",  "1.2.3"),
+    ("1.2.3b0",  "1.2.3"),
+    ("1.2.3rc0", "1.2.3"),
+    ("1.2.3rc2", "1.2.3"),
+    ("1.2.3",    "1.2.4"),
+]
+
+
+@pytest.mark.parametrize("lower, higher", PRERELEASE_LT_FINAL_CASES)
+def test_parse_version_prerelease_lt_final(lower, higher):
+    assert version.parse_version(lower) < version.parse_version(higher)
+    assert not version.parse_version(higher) < version.parse_version(lower)
+
+
+def test_parse_version_prerelease_chain():
+    vs = [version.parse_version(s) for s in ("1.2.3a0", "1.2.3b0", "1.2.3rc0", "1.2.3")]
+    assert vs == sorted(vs)
+    assert vs[0] < vs[1] < vs[2] < vs[3]
