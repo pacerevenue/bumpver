@@ -16,6 +16,10 @@ lexid
 colorama>=0.4
 enum34; python_version < "3.4"
 
+# packaging.version.Version is the PEP 440 implementation
+# (formerly accessed via pkg_resources.parse_version, now deprecated)
+packaging
+
 # looseversion is needed to parse non PEP440 versions
 looseversion; python_version >= "3.5"
 
