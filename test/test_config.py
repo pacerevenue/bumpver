@@ -528,6 +528,20 @@ def test_parse_uv_lock(uv_lock_config_value, expected_value):
     assert cfg.uv_lock is expected_value
 
 
+@pytest.mark.parametrize(
+    ["env_toml", "expected_value"],
+    [("", {}), ('[bumpver.env]\nSKIP = "flake8"', {"SKIP": "flake8"})],
+    ids=["default_empty", "with_overrides"],
+)
+def test_parse_env(env_toml, expected_value):
+    buf = mk_buf("\n".join([MINIMAL_CFG_FIXTURE, env_toml]))
+
+    raw_cfg = config._parse_toml(buf)
+    cfg = config._parse_config(raw_cfg)
+
+    assert cfg.env == expected_value
+
+
 @pytest.mark.parametrize("hook", ["pre_commit_hook", "post_commit_hook"])
 def test_parse_commit_hooks_invalid(hook):
     buf = mk_buf(f"{MINIMAL_CFG_FIXTURE}\n{hook}='foobar.py'")

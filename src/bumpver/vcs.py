@@ -178,9 +178,11 @@ class VCSAPI:
             else:
                 raise
 
-    def commit(self, message: str) -> None:
+    def commit(self, message: str, env_overrides: dict[str, str]) -> None:
         """Commit added files."""
         env: Env = os.environ.copy()
+        if env_overrides:
+            env.update(env_overrides)
 
         if self.name == 'git':
             self('commit', env=env, message=message)
@@ -286,7 +288,7 @@ def commit(
         for filepath in filepaths:
             vcs_api.add(filepath)
 
-        vcs_api.commit(commit_message)
+        vcs_api.commit(commit_message, cfg.env)
 
         if cfg.post_commit_hook:
             logger.info(f"Run post-commit hook: {cfg.post_commit_hook}")

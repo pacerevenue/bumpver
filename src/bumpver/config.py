@@ -157,6 +157,8 @@ class Config(typ.NamedTuple):
 
     file_patterns: PatternsByFile
 
+    env: dict[str, str]
+
 
 MaybeConfig = typ.Optional[Config]
 
@@ -421,6 +423,7 @@ def _parse_config(raw_cfg: RawConfig) -> Config:
     pre_commit_hook : str = _parse_cfg_strings(raw_cfg, 'pre_commit_hook' , "")
     post_commit_hook: str = _parse_cfg_strings(raw_cfg, 'post_commit_hook', "")
     uv_lock         : bool = raw_cfg.get('uv_lock', False)
+    env: dict[str, str]    = raw_cfg.get('env', {})
 
     commit = raw_cfg['commit']
     tag    = raw_cfg['tag']
@@ -463,6 +466,7 @@ def _parse_config(raw_cfg: RawConfig) -> Config:
         push=push,
         is_new_pattern=is_new_pattern,
         file_patterns=file_patterns,
+        env=env,
     )
     logger.debug(_debug_str(cfg))
     return cfg
